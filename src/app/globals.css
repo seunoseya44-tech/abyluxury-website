@@ -1,26 +1,119 @@
 @import "tailwindcss";
 
+@theme {
+  /* Aby Luxury brand palette — LIGHT theme (gold #c3a537 + black) */
+  --color-sylarm-red: #c3a537;        /* primary brand (gold) */
+  --color-sylarm-red-light: #b89324;  /* deeper gold — legible as text/hover */
+  --color-on-brand: #1a1505;          /* text/icon colour on gold fills */
+  --color-secondary: #000000;         /* secondary brand (black) */
+
+  --color-bg: #f5f6f9;        /* page background (soft off-white) */
+  --color-bg-2: #ffffff;      /* alternating white sections */
+  --color-bg-3: #eef1f6;      /* input / image-surface light grey */
+  --color-card: #ffffff;      /* cards */
+  --color-card-2: #f4f6fa;
+
+  --color-text: #10131c;      /* near-black headings + body */
+  --color-text-muted: #5b6573;/* secondary text */
+  --color-text-faint: #97a0b0;/* captions / labels */
+
+  --color-border: rgba(16, 19, 28, 0.10);
+  --color-border-strong: rgba(16, 19, 28, 0.16);
+  --color-subtle: rgba(16, 19, 28, 0.05); /* hover/fill overlays + faint badges */
+
+  --color-success: #14a85a;
+  --color-info: #2f7fe6;
+  --color-warning: #c9871a;
+  --color-purple: #7b52e0;
+
+  --font-display: var(--font-syne), ui-sans-serif, system-ui, sans-serif;
+  --font-sans: var(--font-dm-sans), ui-sans-serif, system-ui, sans-serif;
+  --font-mono: var(--font-jetbrains), ui-monospace, monospace;
+}
+
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  color-scheme: light;
 }
 
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
-}
-
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+html,
+body {
+  background-color: var(--color-bg);
+  color: var(--color-text);
 }
 
 body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  font-family: var(--font-sans);
+  -webkit-font-smoothing: antialiased;
+  background-image:
+    radial-gradient(1100px 560px at 85% -10%, rgba(195, 165, 55, 0.10), transparent 60%),
+    radial-gradient(820px 460px at 5% 105%, rgba(195, 165, 55, 0.06), transparent 60%);
+  background-attachment: fixed;
+}
+
+::selection {
+  background: rgba(195, 165, 55, 0.9);
+  color: #1a1505;
+}
+
+.font-display {
+  font-family: var(--font-display);
+  letter-spacing: -0.02em;
+}
+
+.grid-noise {
+  background-image:
+    linear-gradient(rgba(16, 19, 28, 0.035) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(16, 19, 28, 0.035) 1px, transparent 1px);
+  background-size: 48px 48px;
+}
+
+/*
+ | Section "skins" — re-scope the colour tokens so any component dropped inside
+ | (cards, badges, inputs, text) automatically restyles. Lets us alternate
+ | light / dark / red bands on an otherwise light site without touching markup.
+ */
+.section-dark {
+  --color-bg: #0a0d15;
+  --color-bg-2: #0a0d15;
+  --color-bg-3: #161b27;
+  --color-card: #141824;
+  --color-card-2: #1a1f2e;
+  --color-text: #f4f6fb;
+  --color-text-muted: #9aa4b4;
+  --color-text-faint: #6b7385;
+  --color-border: rgba(255, 255, 255, 0.10);
+  --color-border-strong: rgba(255, 255, 255, 0.18);
+  --color-subtle: rgba(255, 255, 255, 0.06);
+  background-color: #0a0d15;
+  color: var(--color-text);
+}
+
+.section-darker {
+  --color-bg: #05070c;
+  --color-bg-2: #05070c;
+  --color-bg-3: #11151f;
+  --color-card: #0f131c;
+  --color-card-2: #161b27;
+  --color-text: #f4f6fb;
+  --color-text-muted: #8892a4;
+  --color-text-faint: #5b6573;
+  --color-border: rgba(255, 255, 255, 0.08);
+  --color-border-strong: rgba(255, 255, 255, 0.14);
+  --color-subtle: rgba(255, 255, 255, 0.05);
+  background-color: #05070c;
+  color: var(--color-text);
+}
+
+.section-red {
+  --color-text: #ffffff;
+  --color-text-muted: rgba(255, 255, 255, 0.82);
+  --color-text-faint: rgba(255, 255, 255, 0.6);
+  --color-border: rgba(255, 255, 255, 0.22);
+  --color-border-strong: rgba(255, 255, 255, 0.35);
+  --color-subtle: rgba(255, 255, 255, 0.12);
+  color: #ffffff;
+  background-color: #000000;
+  background-image:
+    radial-gradient(1000px 500px at 85% -20%, rgba(195, 165, 55, 0.28), transparent 60%),
+    linear-gradient(135deg, #1c1a12 0%, #000000 100%);
 }
