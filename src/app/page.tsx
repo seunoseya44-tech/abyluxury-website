@@ -114,11 +114,6 @@ export default async function HomePage() {
         <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-16 pb-28 sm:pt-20">
           <div className="grid items-center gap-10 lg:grid-cols-[1fr_1.05fr]">
             <div className="max-w-xl">
-              <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-[var(--color-sylarm-red)]/10 border border-[var(--color-sylarm-red)]/30 mb-6">
-                <span className="text-xs font-semibold tracking-wider uppercase text-[var(--color-sylarm-red-light)]">
-                  ⚡ Live in Abuja · FCT
-                </span>
-              </div>
               <h1 className="font-display font-extrabold text-5xl sm:text-7xl leading-[1.05] tracking-tight">
                 Drive Abuja
                 <br />
