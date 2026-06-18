@@ -5,7 +5,6 @@ import "./globals.css";
 import { AuthProvider } from "@/lib/auth-context";
 import { SiteHeader } from "@/components/site-header";
 import { SiteFooter } from "@/components/site-footer";
-import { SupportChat } from "@/components/support-chat";
 import { WhatsAppFloat } from "@/components/whatsapp-float";
 import { getSiteSettings } from "@/lib/settings";
 
@@ -144,7 +143,6 @@ export default async function RootLayout({
           <SiteHeader logo={settings.logos.landscape} brandName={brandName} />
           <main className="flex-1">{children}</main>
           <SiteFooter settings={settings} />
-          <SupportChat />
           <WhatsAppFloat number={settings.socials.whatsapp} />
         </AuthProvider>
       </body>
