@@ -37,6 +37,7 @@ export default async function CarsListingPage({
 
   const query = {
     type: single(sp, "type"),
+    category: single(sp, "category"),
     min_seats: single(sp, "min_seats"),
     min_price: single(sp, "min_price"),
     vip_only: single(sp, "vip_only"),

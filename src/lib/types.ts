@@ -125,6 +125,7 @@ export type CarSummary = {
   model: string;
   year: number;
   type: string;
+  category: string | null;
   transmission: string;
   fuel_type: string;
   seats: number;

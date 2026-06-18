@@ -7,6 +7,8 @@ import { MarketplaceCta } from "@/components/marketplace-cta";
 import { DownloadCta } from "@/components/download-cta";
 import { ButtonLink, SectionLabel } from "@/components/ui";
 import { SaleCard } from "@/components/sale-card";
+import { CategorySection } from "@/components/category-section";
+import { CAR_CATEGORIES } from "@/lib/categories";
 import { getSiteSettings } from "@/lib/settings";
 import type { CarSale, CarSummary, Faq, Paginated } from "@/lib/types";
 
@@ -193,6 +195,10 @@ export default async function HomePage() {
           </div>
         )}
       </section>
+
+      {CAR_CATEGORIES.map((category) => (
+        <CategorySection key={category.slug} category={category} />
+      ))}
 
       {featuredSales.length > 0 && (
         <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pb-20">
