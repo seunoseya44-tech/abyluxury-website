@@ -6,7 +6,7 @@ import { api, ApiError } from "@/lib/api";
 import { Button, Card } from "@/components/ui";
 import { TripReview } from "@/components/trip-review";
 import { formatNaira, formatDate } from "@/lib/format";
-import type { Booking } from "@/lib/types";
+import type { Booking, SiteSettings } from "@/lib/types";
 
 type InitResponse = {
   payment: { reference: string };
@@ -24,6 +24,14 @@ export default function BookingDetailPage() {
   >("paystack");
   const [paying, setPaying] = useState(false);
   const [payError, setPayError] = useState<string | null>(null);
+
+  // Public site settings — drives the manual bank-transfer payment flow.
+  const [settings, setSettings] = useState<SiteSettings | null>(null);
+  useEffect(() => {
+    api.get<SiteSettings>("v1/settings").then(setSettings).catch(() => {});
+  }, []);
+  const bank = settings?.bank;
+  const useBankTransfer = !!bank?.account_number;
 
   function refetch() {
     return api
@@ -209,7 +217,36 @@ export default function BookingDetailPage() {
           </p>
         </div>
 
-        {canPay && (
+        {canPay && useBankTransfer && bank && (
+          <div className="mt-6 space-y-3 pt-6 border-t border-[var(--color-border)]">
+            <p className="text-[11px] uppercase tracking-wider text-[var(--color-text-faint)]">
+              Bank transfer
+            </p>
+            <p className="text-sm text-[var(--color-text-muted)]">
+              Please transfer{" "}
+              <span className="font-bold text-[var(--color-text)]">
+                {formatNaira(booking.pricing.total_amount)}
+              </span>{" "}
+              to the account below. Your booking is confirmed as soon as we
+              receive the payment.
+            </p>
+
+            <div className="rounded-xl border border-[var(--color-sylarm-red)]/30 bg-[var(--color-sylarm-red)]/5 p-4 space-y-3">
+              <BankRow label="Account number" value={bank.account_number ?? "—"} copyable />
+              <BankRow label="Bank" value={bank.name ?? "—"} />
+              <BankRow label="Account name" value={bank.account_name ?? "—"} />
+              <BankRow label="Reference" value={booking.booking_ref} copyable />
+            </div>
+
+            <p className="text-xs text-[var(--color-text-faint)]">
+              Use <span className="font-mono">{booking.booking_ref}</span> as
+              the transfer narration so we can match your payment quickly.
+              Need help? Use the chat in the bottom-right.
+            </p>
+          </div>
+        )}
+
+        {canPay && !useBankTransfer && (
           <div className="mt-6 space-y-3">
             <div className="grid grid-cols-3 gap-2">
               {(["paystack", "flutterwave", "wallet"] as const).map((g) => (
@@ -246,6 +283,44 @@ export default function BookingDetailPage() {
         )}
         </Card>
       </div>
+    </div>
+  );
+}
+
+function BankRow({
+  label,
+  value,
+  copyable = false,
+}: {
+  label: string;
+  value: string;
+  copyable?: boolean;
+}) {
+  const [copied, setCopied] = useState(false);
+  function copy() {
+    if (!navigator.clipboard) return;
+    navigator.clipboard.writeText(value).then(() => {
+      setCopied(true);
+      setTimeout(() => setCopied(false), 1500);
+    });
+  }
+  return (
+    <div className="flex items-center justify-between gap-3">
+      <div className="min-w-0">
+        <p className="text-[10px] uppercase tracking-wider text-[var(--color-text-faint)]">
+          {label}
+        </p>
+        <p className="font-semibold text-[var(--color-text)] truncate">{value}</p>
+      </div>
+      {copyable && (
+        <button
+          type="button"
+          onClick={copy}
+          className="text-xs font-semibold px-2.5 py-1 rounded-md border border-[var(--color-sylarm-red)]/40 text-[var(--color-sylarm-red-light)] hover:bg-[var(--color-sylarm-red)]/10 transition shrink-0"
+        >
+          {copied ? "Copied" : "Copy"}
+        </button>
+      )}
     </div>
   );
 }

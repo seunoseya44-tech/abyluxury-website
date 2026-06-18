@@ -28,6 +28,7 @@ const sections = [
     links: [
       { href: "/about", label: "About" },
       { href: "/contact", label: "Contact" },
+      { href: "/faq", label: "FAQs" },
       { href: "/terms", label: "Terms of Service" },
       { href: "/privacy", label: "Privacy Policy" },
     ],

@@ -8,7 +8,7 @@ import { DownloadCta } from "@/components/download-cta";
 import { ButtonLink, SectionLabel } from "@/components/ui";
 import { SaleCard } from "@/components/sale-card";
 import { getSiteSettings } from "@/lib/settings";
-import type { CarSale, CarSummary, Paginated } from "@/lib/types";
+import type { CarSale, CarSummary, Faq, Paginated } from "@/lib/types";
 
 async function getFeaturedCars(): Promise<CarSummary[]> {
   try {
@@ -16,6 +16,15 @@ async function getFeaturedCars(): Promise<CarSummary[]> {
       query: { featured_only: true, per_page: 6 },
     });
     return res.data;
+  } catch {
+    return [];
+  }
+}
+
+async function getFaqs(): Promise<Faq[]> {
+  try {
+    const res = await apiFetch<{ data: Faq[] }>("v1/faqs");
+    return res.data.slice(0, 5);
   } catch {
     return [];
   }
@@ -100,10 +109,11 @@ const steps = [
 ];
 
 export default async function HomePage() {
-  const [featured, featuredSales, settings] = await Promise.all([
+  const [featured, featuredSales, settings, faqs] = await Promise.all([
     getFeaturedCars(),
     getFeaturedSales(),
     getSiteSettings(),
+    getFaqs(),
   ]);
 
   return (
@@ -345,6 +355,48 @@ export default async function HomePage() {
           ))}
         </div>
       </section>
+
+      {faqs.length > 0 && (
+        <section className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 py-20">
+          <SectionLabel>Got questions?</SectionLabel>
+          <div className="flex items-end justify-between mb-10 gap-4">
+            <h2 className="font-display font-extrabold text-4xl sm:text-5xl">
+              FAQs
+            </h2>
+            <Link
+              href="/faq"
+              className="hidden sm:inline-flex text-sm font-semibold text-[var(--color-sylarm-red-light)] hover:text-[var(--color-sylarm-red)] transition"
+            >
+              View all FAQs →
+            </Link>
+          </div>
+          <div className="divide-y divide-[var(--color-border)]">
+            {faqs.map((faq) => (
+              <details key={faq.id} className="group py-5">
+                <summary className="flex cursor-pointer items-start justify-between gap-4 list-none">
+                  <span className="font-semibold leading-snug group-open:text-[var(--color-sylarm-red-light)]">
+                    {faq.question}
+                  </span>
+                  <span className="mt-0.5 shrink-0 text-[var(--color-text-faint)] transition group-open:rotate-180">
+                    <svg viewBox="0 0 20 20" fill="currentColor" className="h-5 w-5" aria-hidden="true">
+                      <path fillRule="evenodd" d="M5.22 8.22a.75.75 0 0 1 1.06 0L10 11.94l3.72-3.72a.75.75 0 1 1 1.06 1.06l-4.25 4.25a.75.75 0 0 1-1.06 0L5.22 9.28a.75.75 0 0 1 0-1.06z" clipRule="evenodd" />
+                    </svg>
+                  </span>
+                </summary>
+                <p className="mt-3 text-[var(--color-text-muted)] text-sm leading-relaxed">
+                  {faq.answer}
+                </p>
+              </details>
+            ))}
+          </div>
+          <Link
+            href="/faq"
+            className="mt-8 inline-flex text-sm font-semibold text-[var(--color-sylarm-red-light)] hover:text-[var(--color-sylarm-red)] transition sm:hidden"
+          >
+            View all FAQs →
+          </Link>
+        </section>
+      )}
 
       <DownloadCta settings={settings} />
 

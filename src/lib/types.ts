@@ -21,6 +21,11 @@ export type SiteSettings = {
     whatsapp: string | null;
   };
   apps: { ios: string | null; android: string | null };
+  bank: {
+    name: string | null;
+    account_number: string | null;
+    account_name: string | null;
+  };
   seo: {
     title: string | null;
     description: string | null;
@@ -142,9 +147,18 @@ export type CarImage = {
   display_order: number;
 };
 
+export type Faq = {
+  id: number;
+  question: string;
+  answer: string;
+  sort_order: number;
+};
+
 export type CarDetail = CarSummary & {
   plate_number?: string;
   description: string | null;
+  phone_number: string | null;
+  whatsapp_number: string | null;
   rates: {
     hourly: number | null;
     daily: number;

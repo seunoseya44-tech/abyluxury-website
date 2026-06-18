@@ -17,6 +17,7 @@ const FALLBACK: SiteSettings = {
   contact_email: "hello@abyluxurycars.ng",
   socials: { facebook: null, x: null, tiktok: null, instagram: null, whatsapp: null },
   apps: { ios: null, android: null },
+  bank: { name: null, account_number: null, account_name: null },
   seo: {
     title: "Aby Luxury Car Rentals — Premium Car Rental & Chauffeurs in Abuja",
     description:
@@ -42,6 +43,7 @@ export async function getSiteSettings(): Promise<SiteSettings> {
       logos: { ...FALLBACK.logos, ...s.logos },
       socials: { ...FALLBACK.socials, ...s.socials },
       apps: { ...FALLBACK.apps, ...s.apps },
+      bank: { ...FALLBACK.bank, ...s.bank },
       seo: { ...FALLBACK.seo, ...s.seo },
     };
   } catch {
